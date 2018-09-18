@@ -152,7 +152,7 @@ public class SumoHttpSenderTest {
         for (int i = 0; i < 1000; i ++) {
             expected.append("info " + i + "\n");
         }
-        assertEquals(expected.toString(), handler.getExchanges().get(1).getBody());
+        assertEquals(expected.toString(), handler.getExchanges().get(0).getBody());
     }
 
     @Test
