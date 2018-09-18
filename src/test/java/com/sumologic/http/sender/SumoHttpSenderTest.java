@@ -185,4 +185,23 @@ public class SumoHttpSenderTest {
         assertEquals(2, handler.getExchanges().size());
     }
 
+    @Test
+    public void testFlushOnStop() throws Exception {
+        setUpSender("testSource", "testHost", "testCategory",
+                1000, 1000, true);
+        flusher.start();
+        for (int i = 0; i < 10; i ++) {
+            queue.add("info " + i + "\n");
+        }
+        flusher.start();
+        flusher.stop();
+        Thread.sleep(200);
+        assertEquals(1, handler.getExchanges().size());
+        StringBuffer expected = new StringBuffer();
+        for (int i = 0; i < 10; i ++) {
+            expected.append("info " + i + "\n");
+        }
+        assertEquals(expected.toString(), handler.getExchanges().get(0).getBody());
+    }
+
 }
