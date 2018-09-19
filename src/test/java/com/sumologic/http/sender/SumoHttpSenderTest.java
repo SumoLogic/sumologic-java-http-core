@@ -115,6 +115,23 @@ public class SumoHttpSenderTest {
     }
 
     @Test
+    public void testSingleMessageWithoutMetadata() throws Exception {
+        setUpSender(null, null, null,
+                1, 1, false);
+        queue.add("This is a message\n");
+        flusher.start();
+        Thread.sleep(200);
+        assertEquals(1, handler.getExchanges().size());
+        assertEquals("This is a message\n", handler.getExchanges().get(0).getBody());
+        for (MaterializedHttpRequest request: handler.getExchanges()) {
+            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Name") == null);
+            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Category") == null);
+            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Host") == null);
+            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Client").equals("testClient"));
+        }
+    }
+
+    @Test
     public void testRetry() throws Exception {
         setUpSender("testSource", "testHost", "testCategory",
                 1, 1, false);
@@ -186,10 +203,22 @@ public class SumoHttpSenderTest {
     }
 
     @Test
+    public void testNonFlushOnStop() throws Exception {
+        setUpSender("testSource", "testHost", "testCategory",
+                1000, 1000, false);
+        for (int i = 0; i < 10; i ++) {
+            queue.add("info " + i + "\n");
+        }
+        flusher.start();
+        flusher.stop();
+        Thread.sleep(200);
+        assertEquals(0, handler.getExchanges().size());
+    }
+
+    @Test
     public void testFlushOnStop() throws Exception {
         setUpSender("testSource", "testHost", "testCategory",
                 1000, 1000, true);
-        flusher.start();
         for (int i = 0; i < 10; i ++) {
             queue.add("info " + i + "\n");
         }
