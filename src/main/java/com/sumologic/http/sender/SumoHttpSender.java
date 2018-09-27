@@ -51,9 +51,9 @@ public class SumoHttpSender {
     private static final String SUMO_SOURCE_HOST_HEADER = "X-Sumo-Host";
     private static final String SUMO_CLIENT_HEADER = "X-Sumo-Client";
 
-    private long retryInterval = 10000L;
-    private int connectionTimeout = 1000;
-    private int socketTimeout = 60000;
+    private long retryIntervalMs = 10000L;
+    private int connectionTimeoutMs = 1000;
+    private int socketTimeoutMs = 60000;
     private String url = null;
     private String sourceName = null;
     private String sourceCategory = null;
@@ -70,8 +70,8 @@ public class SumoHttpSender {
         this.proxySettings = proxySettings;
     }
 
-    public void setRetryInterval(long retryInterval) {
-        this.retryInterval = retryInterval;
+    public void setRetryIntervalMs(long retryIntervalMs) {
+        this.retryIntervalMs = retryIntervalMs;
     }
 
     public void setUrl(String url) {
@@ -90,12 +90,12 @@ public class SumoHttpSender {
         this.sourceHost = sourceHost;
     }
 
-    public void setConnectionTimeout(int connectionTimeout) {
-        this.connectionTimeout = connectionTimeout;
+    public void setConnectionTimeoutMs(int connectionTimeoutMs) {
+        this.connectionTimeoutMs = connectionTimeoutMs;
     }
 
-    public void setSocketTimeout(int socketTimeout) {
-        this.socketTimeout = socketTimeout;
+    public void setSocketTimeoutMs(int socketTimeoutMs) {
+        this.socketTimeoutMs = socketTimeoutMs;
     }
 
     public void setClientHeaderValue(String clientHeaderValue) {
@@ -108,8 +108,8 @@ public class SumoHttpSender {
 
     public void init() {
         RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(socketTimeout)
-                .setConnectTimeout(connectionTimeout)
+                .setSocketTimeout(socketTimeoutMs)
+                .setConnectTimeout(connectionTimeoutMs)
                 .setCookieSpec(CookieSpecs.STANDARD)
                 .build();
 
@@ -142,7 +142,7 @@ public class SumoHttpSender {
                 success = true;
             } catch (Exception e) {
                 try {
-                    Thread.sleep(retryInterval);
+                    Thread.sleep(retryIntervalMs);
                 } catch (InterruptedException e1) {
                     break;
                 }

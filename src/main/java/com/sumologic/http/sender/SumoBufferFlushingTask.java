@@ -36,7 +36,7 @@ import java.util.List;
 public class SumoBufferFlushingTask extends BufferFlushingTask<String, String> {
     private static final Logger logger = LogManager.getRootLogger();
     private SumoHttpSender sender;
-    private long maxFlushInterval;
+    private long maxFlushIntervalMs;
     private long messagesPerRequest;
 
     public SumoBufferFlushingTask(BufferWithEviction<String> queue) {
@@ -51,13 +51,13 @@ public class SumoBufferFlushingTask extends BufferFlushingTask<String, String> {
         this.messagesPerRequest = messagesPerRequest;
     }
 
-    public void setMaxFlushInterval(long maxFlushInterval) {
-        this.maxFlushInterval = maxFlushInterval;
+    public void setMaxFlushIntervalMs(long maxFlushIntervalMs) {
+        this.maxFlushIntervalMs = maxFlushIntervalMs;
     }
 
     @Override
-    protected long getMaxFlushInterval() {
-        return maxFlushInterval;
+    protected long getMaxFlushIntervalMs() {
+        return maxFlushIntervalMs;
     }
 
     @Override

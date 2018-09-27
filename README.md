@@ -39,14 +39,14 @@ To use the library, you'll probably want to create a `SumoBufferFlusher` which a
 | proxyUser             | No       |               | Proxy host username for basic and NTLM authentication. For no authentication proxy, do not specify.                                        |
 | proxyPassword         | No       |               | Proxy host password for basic and NTLM authentication. For no authentication proxy, do not specify.                                        |
 | proxyDomain           | No       |               | Proxy host domain name for NTLM authentication only                                                                                        |
-| retryInterval         | No       | 10000         | Retry interval (in ms) if a request fails                                                                                                  |
-| connectionTimeout     | No       | 1000          | Timeout (in ms) for connection                                                                                                             |
-| socketTimeout         | No       | 60000         | Timeout (in ms) for a socket                                                                                                               |
+| retryIntervalMs         | No       | 10000         | Retry interval (in ms) if a request fails                                                                                                  |
+| connectionTimeoutMs     | No       | 1000          | Timeout (in ms) for connection                                                                                                             |
+| socketTimeoutMs         | No       | 60000         | Timeout (in ms) for a socket                                                                                                               |
 | messagesPerRequest    | No       | 100           | Number of messages needed to be in the queue before flushing                                                                               |
-| maxFlushInterval      | No       | 10000         | Maximum interval (in ms) between flushes                                                                                                   |
-| flushingAccuracy      | No       | 250           | How often (in ms) that the flushing thread checks the message queue                                                                        |
+| maxFlushIntervalMs      | No       | 10000         | Maximum interval (in ms) between flushes                                                                                                   |
+| flushingAccuracyMs      | No       | 250           | How often (in ms) that the flushing thread checks the message queue                                                                        |
 | maxQueueSizeBytes     | No       | 1000000       | Maximum capacity (in bytes) of the message queue
-| flushAllBeforeStopping| No       | false         | Flush all messages before stopping regardless of flushingAccuracy
+| flushAllBeforeStopping| No       | false         | Flush all messages before stopping regardless of flushingAccuracyMs
 
 
 ### TLS Support

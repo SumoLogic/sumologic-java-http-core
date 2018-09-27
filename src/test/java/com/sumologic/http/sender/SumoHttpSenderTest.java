@@ -48,7 +48,7 @@ public class SumoHttpSenderTest {
     private SumoBufferFlusher flusher;
 
     private void setUpSender(String sourceName, String sourceHost, String sourceCategory,
-                                          long messagesPerRequest, long maxFlushInterval,
+                                          long messagesPerRequest, long maxFlushIntervalMs,
                                           boolean flushAllBeforeStopping) {
         sender = new SumoHttpSender();
         sender.setUrl(ENDPOINT_URL);
@@ -56,7 +56,7 @@ public class SumoHttpSenderTest {
         sender.setSourceName(sourceName);
         sender.setSourceCategory(sourceCategory);
         sender.setClientHeaderValue("testClient");
-        sender.setRetryInterval(10);
+        sender.setRetryIntervalMs(10);
         sender.init();
 
         queue = new BufferWithFifoEviction<String>(1000000,
@@ -71,7 +71,7 @@ public class SumoHttpSenderTest {
 
         flusher = new SumoBufferFlusher(100,
             messagesPerRequest,
-            maxFlushInterval,
+            maxFlushIntervalMs,
             sender,
             queue,
             flushAllBeforeStopping);

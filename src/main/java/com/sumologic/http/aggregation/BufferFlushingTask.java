@@ -43,7 +43,7 @@ public abstract class BufferFlushingTask<In, Out> implements Runnable {
 
     private boolean needsFlushing() {
         long currentTime = System.currentTimeMillis();
-        long dateOfNextFlush = timeOfLastFlush + getMaxFlushInterval();
+        long dateOfNextFlush = timeOfLastFlush + getMaxFlushIntervalMs();
 
         return (messageQueue.size() >= getMessagesPerRequest()) ||
                (currentTime >= dateOfNextFlush);
@@ -67,7 +67,7 @@ public abstract class BufferFlushingTask<In, Out> implements Runnable {
 
     /* Subclasses should define from here */
 
-    abstract protected long getMaxFlushInterval();
+    abstract protected long getMaxFlushIntervalMs();
     abstract protected long getMessagesPerRequest();
 
     protected BufferFlushingTask(BufferWithEviction<In> messageQueue) {

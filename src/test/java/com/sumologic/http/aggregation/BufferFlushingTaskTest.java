@@ -114,13 +114,13 @@ public class BufferFlushingTaskTest {
     }
 
     private BufferFlushingTask<String, List<String>> createTask(
-            final long maxFlushInterval, final long messagesPerRequest) {
+            final long maxFlushIntervalMs, final long messagesPerRequest) {
 
         return new BufferFlushingTask<String, List<String>>(queue) {
 
             @Override
-            protected long getMaxFlushInterval() {
-                return maxFlushInterval;
+            protected long getMaxFlushIntervalMs() {
+                return maxFlushIntervalMs;
             }
 
             @Override

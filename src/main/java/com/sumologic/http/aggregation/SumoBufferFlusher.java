@@ -36,22 +36,22 @@ public class SumoBufferFlusher {
     private SumoBufferFlushingTask flushingTask;
     private ScheduledFuture future;
     private ScheduledExecutorService executor;
-    private long flushingAccuracy;
+    private long flushingAccuracyMs;
     private boolean flushBeforeStop;
 
 
     public SumoBufferFlusher(
-            long flushingAccuracy,
+            long flushingAccuracyMs,
             long messagesPerRequest,
-            long maxFlushInterval,
+            long maxFlushIntervalMs,
             SumoHttpSender sender,
             BufferWithEviction<String> buffer,
             boolean flushAllBeforeStopping) {
         this.flushBeforeStop = flushAllBeforeStopping;
-        this.flushingAccuracy = flushingAccuracy;
+        this.flushingAccuracyMs = flushingAccuracyMs;
         flushingTask = new SumoBufferFlushingTask(buffer);
         flushingTask.setMessagesPerRequest(messagesPerRequest);
-        flushingTask.setMaxFlushInterval(maxFlushInterval);
+        flushingTask.setMaxFlushIntervalMs(maxFlushIntervalMs);
         flushingTask.setSender(sender);
     }
 
@@ -72,7 +72,7 @@ public class SumoBufferFlusher {
 
         future =
             executor.
-                scheduleAtFixedRate(flushingTask, 0, flushingAccuracy, TimeUnit.MILLISECONDS);
+                scheduleAtFixedRate(flushingTask, 0, flushingAccuracyMs, TimeUnit.MILLISECONDS);
 
     }
 
