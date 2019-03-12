@@ -28,6 +28,7 @@ package com.sumologic.http.sender;
 
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpPost;
@@ -174,13 +175,18 @@ public class SumoHttpSender {
             //need to consume the body if you want to re-use the connection.
             logger.debug("Successfully sent log request to Sumo Logic");
             EntityUtils.consume(response.getEntity());
+        } catch (ClientProtocolException e) {
+            logger.warn("Dropping message due to invalid URL: " + url);
+            try {
+                post.abort();
+            } catch (Exception ignore) { }
+            // Don't throw exception any further
         } catch (IOException e) {
             logger.warn("Could not send log to Sumo Logic");
             logger.debug("Reason:", e);
             try {
                 post.abort();
-            } catch (Exception ignore) {
-            }
+            } catch (Exception ignore) { }
             throw e;
         }
     }
