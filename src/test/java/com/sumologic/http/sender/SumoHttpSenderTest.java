@@ -31,6 +31,7 @@ import com.sumologic.http.queue.BufferWithEviction;
 import com.sumologic.http.queue.BufferWithFifoEviction;
 import com.sumologic.http.queue.CostBoundedConcurrentQueue;
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -47,11 +48,11 @@ public class SumoHttpSenderTest {
     private BufferWithEviction<String> queue;
     private SumoBufferFlusher flusher;
 
-    private void setUpSender(String sourceName, String sourceHost, String sourceCategory,
-                                          long messagesPerRequest, long maxFlushIntervalMs,
-                                          boolean flushAllBeforeStopping) {
+    private void setUpSender(String url, String sourceName, String sourceHost,
+                             String sourceCategory, long messagesPerRequest,
+                             long maxFlushIntervalMs, boolean flushAllBeforeStopping) {
         sender = new SumoHttpSender();
-        sender.setUrl(ENDPOINT_URL);
+        sender.setUrl(url);
         sender.setSourceHost(sourceHost);
         sender.setSourceName(sourceName);
         sender.setSourceCategory(sourceCategory);
@@ -99,7 +100,7 @@ public class SumoHttpSenderTest {
 
     @Test
     public void testSingleMessage() throws Exception {
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 1, 1, false);
         queue.add("This is a message\n");
         flusher.start();
@@ -116,7 +117,7 @@ public class SumoHttpSenderTest {
 
     @Test
     public void testSingleMessageWithoutMetadata() throws Exception {
-        setUpSender(null, null, null,
+        setUpSender(ENDPOINT_URL, null, null, null,
                 1, 1, false);
         queue.add("This is a message\n");
         flusher.start();
@@ -133,7 +134,7 @@ public class SumoHttpSenderTest {
 
     @Test
     public void testRetry() throws Exception {
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 1, 1, false);
         // retry on 503, don't retry on 429
         handler.addForceReturnCode(503);
@@ -157,7 +158,7 @@ public class SumoHttpSenderTest {
 
     @Test
     public void testBatching() throws Exception {
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 1000, 1000, false);
         for (int i = 0; i < 1000; i ++) {
             queue.add("info " + i + "\n");
@@ -175,7 +176,7 @@ public class SumoHttpSenderTest {
     @Test
     public void testBatchingBySize() throws Exception {
         // Large time window, ensure all messages get batched by number
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 10, 1000, false);
         flusher.start();
         for (int i = 0; i < 10; i ++) {
@@ -192,7 +193,7 @@ public class SumoHttpSenderTest {
     @Test
     public void testBatchingByWindow() throws Exception {
         // Small time window, ensure all messages get batched by time
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 1000, 100, false);
         flusher.start();
         queue.add("Test1");
@@ -204,7 +205,7 @@ public class SumoHttpSenderTest {
 
     @Test
     public void testNonFlushOnStop() throws Exception {
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 1000, 1000, false);
         for (int i = 0; i < 10; i ++) {
             queue.add("info " + i + "\n");
@@ -217,7 +218,7 @@ public class SumoHttpSenderTest {
 
     @Test
     public void testFlushOnStop() throws Exception {
-        setUpSender("testSource", "testHost", "testCategory",
+        setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
                 1000, 1000, true);
         for (int i = 0; i < 10; i ++) {
             queue.add("info " + i + "\n");
@@ -231,6 +232,17 @@ public class SumoHttpSenderTest {
             expected.append("info " + i + "\n");
         }
         assertEquals(expected.toString(), handler.getExchanges().get(0).getBody());
+    }
+
+    @Test(timeout=1000)
+    public void testInvalidUrlOnStop() throws Exception {
+        setUpSender("fakeUrl", "testSource", "testHost", "testCategory",
+                1, 1, true);
+        queue.add("This is a message\n");
+        flusher.start();
+        flusher.stop();
+        Thread.sleep(200);
+        assertEquals(0, handler.getExchanges().size());
     }
 
 }
