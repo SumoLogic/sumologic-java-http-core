@@ -1,3 +1,5 @@
+[![Build Status](https://api.travis-ci.org/SumoLogic/sumologic-java-http-core.svg?branch=master)](https://travis-ci.org/SumoLogic/sumologic-java-http-core)
+
 # sumologic-java-http-core
 
 Core Java components for sending data to Sumo Logic HTTP sources.  Used by [Log4j](https://github.com/SumoLogic/sumo-log4j-appender), [Log4j2](https://github.com/SumoLogic/sumologic-log4j2-appender), and [Logback](https://github.com/SumoLogic/sumologic-logback-appender) appenders to send logs to Sumo Logic.
