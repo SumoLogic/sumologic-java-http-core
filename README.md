@@ -1,4 +1,5 @@
 [![Build Status](https://api.travis-ci.org/SumoLogic/sumologic-java-http-core.svg?branch=master)](https://travis-ci.org/SumoLogic/sumologic-java-http-core)
+[![codecov.io](https://codecov.io/github/SumoLogic/sumologic-java-http-core/coverage.svg?branch=master)](https://codecov.io/github/SumoLogic/sumologic-java-http-core?branch=master)
 
 # sumologic-java-http-core
 
