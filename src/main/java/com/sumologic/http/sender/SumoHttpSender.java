@@ -42,6 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 
 public class SumoHttpSender {
@@ -62,6 +63,8 @@ public class SumoHttpSender {
     private ProxySettings proxySettings = null;
     private CloseableHttpClient httpClient = null;
     private String clientHeaderValue = null;
+    private String retryableHttpCodeRegex = "^5.*";
+    private Pattern retryableHttpCodeRegexPattern = null;
 
     public ProxySettings getProxySettings() {
         return proxySettings;
@@ -103,6 +106,10 @@ public class SumoHttpSender {
         this.clientHeaderValue = clientHeaderValue;
     }
 
+    public void setRetryableHttpCodeRegex(String retryableHttpCodeRegex) {
+        this.retryableHttpCodeRegex = retryableHttpCodeRegex;
+    }
+
     public boolean isInitialized() {
         return httpClient != null;
     }
@@ -124,6 +131,8 @@ public class SumoHttpSender {
         }
 
         httpClient = builder.build();
+
+        retryableHttpCodeRegexPattern = Pattern.compile(retryableHttpCodeRegex);
     }
 
     public void close() throws IOException {
@@ -167,8 +176,8 @@ public class SumoHttpSender {
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
                 logger.warn(String.format("Received HTTP error from Sumo Service: %d", statusCode));
-                // Not success. Only retry if status is unavailable.
-                if (statusCode == 503) {
+                // Not success. Only retry if status matches retryableHttpCodeRegex
+                if (retryableHttpCodeRegexPattern.matcher(String.valueOf(statusCode)).find()) {
                     throw new IOException("Server unavailable");
                 }
             }
