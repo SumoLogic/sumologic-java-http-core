@@ -50,6 +50,7 @@ To use the library, you'll probably want to create a `SumoBufferFlusher` which a
 | flushingAccuracyMs      | No       | 250           | How often (in ms) that the flushing thread checks the message queue                                                                        |
 | maxQueueSizeBytes     | No       | 1000000       | Maximum capacity (in bytes) of the message queue
 | flushAllBeforeStopping| No       | false         | Flush all messages before stopping regardless of flushingAccuracyMs
+| retryableHttpCodeRegex| No       | ^5.*         | Regular expression specifying which HTTP error code(s) should be retried during sending. By default, all 5xx error codes will be retried.
 
 ### TLS 1.2 Requirement
 
