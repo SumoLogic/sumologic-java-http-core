@@ -175,14 +175,17 @@ public class SumoHttpSender {
             HttpResponse response = httpClient.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
-                logger.warn(String.format("Received HTTP error from Sumo Service: %d", statusCode));
+                logger.warn(String.format("Received non-200 response code from Sumo Service: " + statusCode));
                 // Not success. Only retry if status matches retryableHttpCodeRegex
                 if (retryableHttpCodeRegexPattern.matcher(String.valueOf(statusCode)).find()) {
-                    throw new IOException("Server unavailable");
+                    //need to consume the body if you want to re-use the connection.
+                    EntityUtils.consume(response.getEntity());
+                    throw new IOException("Encountered retryable status code: " + statusCode);
                 }
+            } else {
+                logger.debug("Successfully sent log request to Sumo Logic");
             }
             //need to consume the body if you want to re-use the connection.
-            logger.debug("Successfully sent log request to Sumo Logic");
             EntityUtils.consume(response.getEntity());
         } catch (ClientProtocolException e) {
             logger.warn("Dropping message due to invalid URL: " + url);
@@ -191,8 +194,8 @@ public class SumoHttpSender {
             } catch (Exception ignore) { }
             // Don't throw exception any further
         } catch (IOException e) {
-            logger.warn("Could not send log to Sumo Logic");
-            logger.debug("Reason:", e);
+            logger.warn("Could not send log to Sumo Logic. Reason: " + e.getMessage());
+            logger.debug(e);
             try {
                 post.abort();
             } catch (Exception ignore) { }
