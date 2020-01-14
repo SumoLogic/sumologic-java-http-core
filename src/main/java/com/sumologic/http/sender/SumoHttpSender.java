@@ -175,7 +175,7 @@ public class SumoHttpSender {
             HttpResponse response = httpClient.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();
             if (statusCode != 200) {
-                logger.warn(String.format("Received non-200 response code from Sumo Service: " + statusCode));
+                logger.warn("Received non-200 response code from Sumo Service: " + statusCode);
                 // Not success. Only retry if status matches retryableHttpCodeRegex
                 if (retryableHttpCodeRegexPattern.matcher(String.valueOf(statusCode)).find()) {
                     //need to consume the body if you want to re-use the connection.
