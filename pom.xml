@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.sumologic.plugins.http</groupId>
     <artifactId>sumologic-http-core</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.6</version>
     <packaging>jar</packaging>
     <name>Sumo Logic HTTP Core</name>
     <description>Core logic for queueing, aggregating, and sending to a Sumo Logic HTTP endpoint</description>
@@ -76,7 +76,9 @@
                 <configuration>
                     <serverId>sonatype-nexus-staging</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                    <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                    <keepStagingRepositoryOnFailure>true</keepStagingRepositoryOnFailure>
+                    <keepStagingRepositoryOnCloseRuleFailure>true</keepStagingRepositoryOnCloseRuleFailure>
                 </configuration>
             </plugin>
             <plugin>
