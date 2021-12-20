@@ -27,8 +27,8 @@
 package com.sumologic.http.aggregation;
 
 import com.sumologic.http.queue.BufferWithEviction;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ import java.util.List;
  * Task to perform a single flushing check
  */
 public abstract class BufferFlushingTask<In, Out> implements Runnable {
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger logger = LoggerFactory.getLogger(BufferFlushingTask.class);
     private long timeOfLastFlush = System.currentTimeMillis();
     private BufferWithEviction<In> messageQueue;
 

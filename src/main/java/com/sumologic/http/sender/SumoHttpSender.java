@@ -26,6 +26,8 @@
 
 package com.sumologic.http.sender;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.http.Consts;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
@@ -38,15 +40,13 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
 
 
 public class SumoHttpSender {
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger logger = LoggerFactory.getLogger(SumoHttpSender.class);
 
     private static final String SUMO_SOURCE_NAME_HEADER = "X-Sumo-Name";
     private static final String SUMO_SOURCE_CATEGORY_HEADER = "X-Sumo-Category";
@@ -194,8 +194,7 @@ public class SumoHttpSender {
             } catch (Exception ignore) { }
             // Don't throw exception any further
         } catch (IOException e) {
-            logger.warn("Could not send log to Sumo Logic. Reason: " + e.getMessage());
-            logger.debug(e);
+            logger.warn("Could not send log to Sumo Logic", e);
             try {
                 post.abort();
             } catch (Exception ignore) { }
