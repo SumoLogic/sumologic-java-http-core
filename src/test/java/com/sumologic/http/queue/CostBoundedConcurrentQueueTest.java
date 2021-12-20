@@ -110,7 +110,7 @@ public class CostBoundedConcurrentQueueTest {
         assertEquals(800, queue.cost());
 
         List<String> list = new ArrayList<String>(2);
-        queue.drainTo(list);
+        queue.drainTo(list, Integer.MAX_VALUE);
 
         assertEquals(0, queue.cost());
 

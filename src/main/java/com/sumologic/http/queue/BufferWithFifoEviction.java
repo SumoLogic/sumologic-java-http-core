@@ -92,8 +92,8 @@ public class BufferWithFifoEviction<T> extends BufferWithEviction<T> {
     }
 
     @Override
-    public int drainTo(Collection<T> collection) {
-        return queue.drainTo(collection);
+    public int drainTo(Collection<T> collection, int atMost) {
+        return queue.drainTo(collection, atMost);
     }
 
     @Override

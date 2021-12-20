@@ -113,8 +113,24 @@ public class BufferFlushingTaskTest {
         assertTrue(tasks.isEmpty());
     }
 
+    @Test
+    public void testFlushDoesNotSendTooManyMessagesAtOnce() throws Exception {
+        // given
+        BufferFlushingTask<String, List<String>> task =
+                createTask(Integer.MAX_VALUE, 2);
+
+        // when
+        queue.add("msg1");
+        queue.add("msg2");
+        queue.add("msg3");
+        task.flushAndSend();
+
+        // test
+        assertEquals(2, tasks.get(0).size());
+    }
+
     private BufferFlushingTask<String, List<String>> createTask(
-            final long maxFlushIntervalMs, final long messagesPerRequest) {
+            final long maxFlushIntervalMs, final int messagesPerRequest) {
 
         return new BufferFlushingTask<String, List<String>>(queue) {
 
@@ -124,7 +140,7 @@ public class BufferFlushingTaskTest {
             }
 
             @Override
-            protected long getMessagesPerRequest() {
+            protected int getMessagesPerRequest() {
                 return messagesPerRequest;
             }
 

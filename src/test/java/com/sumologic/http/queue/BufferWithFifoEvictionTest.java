@@ -84,7 +84,7 @@ public class BufferWithFifoEvictionTest {
         }
 
         List<Integer> result = new ArrayList<Integer>(10);
-        queue.drainTo(result);
+        queue.drainTo(result, Integer.MAX_VALUE);
 
         assertEquals(10, result.size());
         for (int i = 0; i < queue.size(); i++) {
@@ -102,7 +102,7 @@ public class BufferWithFifoEvictionTest {
         }
 
         List<Integer> result = new ArrayList<Integer>(3);
-        queue.drainTo(result);
+        queue.drainTo(result, Integer.MAX_VALUE);
 
         assertEquals(3, result.size());
         assertEquals(Arrays.asList(3, 4, 5), result);
@@ -119,7 +119,7 @@ public class BufferWithFifoEvictionTest {
         assertFalse(queue.add(1000));
 
         List<Integer> result = new ArrayList<Integer>(3);
-        queue.drainTo(result);
+        queue.drainTo(result, Integer.MAX_VALUE);
 
         assertEquals(Arrays.asList(1, 2, 3, 4, 5), result);
 
@@ -136,7 +136,7 @@ public class BufferWithFifoEvictionTest {
         assertTrue(queue.add(6));
 
         List<Integer> result = new ArrayList<Integer>(3);
-        queue.drainTo(result);
+        queue.drainTo(result, Integer.MAX_VALUE);
 
         assertEquals(3, result.size());
         assertEquals(Arrays.asList(4, 5, 6), result);

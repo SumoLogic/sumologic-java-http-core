@@ -49,18 +49,24 @@ public abstract class BufferFlushingTask<In, Out> implements Runnable {
                (currentTime >= dateOfNextFlush);
     }
 
-    private void flushAndSend() {
-        List<In> messages = new ArrayList<In>(messageQueue.size());
-        messageQueue.drainTo(messages);
+    protected void flushAndSend() {
+        boolean shouldContinue = true;
 
-        if (messages.size() > 0) {
-            logger.debug(String.format("%s - Flushing and sending out %d messages (%d messages left)",
-                    new java.util.Date(),
-                    messages.size(),
-                    messageQueue.size()));
-            Out body = aggregate(messages);
-            sendOut(body);
-            timeOfLastFlush = System.currentTimeMillis();
+        while (shouldContinue) {
+            List<In> messages = new ArrayList<In>(messageQueue.size());
+            messageQueue.drainTo(messages, this.getMessagesPerRequest());
+
+            if (!messages.isEmpty()) {
+                logger.debug(String.format("%s - Flushing and sending out %d messages (%d messages left)",
+                        new java.util.Date(),
+                        messages.size(),
+                        messageQueue.size()));
+                Out body = aggregate(messages);
+                sendOut(body);
+                timeOfLastFlush = System.currentTimeMillis();
+            } else {
+                shouldContinue = false;
+            }
         }
     }
 
@@ -68,7 +74,7 @@ public abstract class BufferFlushingTask<In, Out> implements Runnable {
     /* Subclasses should define from here */
 
     abstract protected long getMaxFlushIntervalMs();
-    abstract protected long getMessagesPerRequest();
+    abstract protected int getMessagesPerRequest();
 
     protected BufferFlushingTask(BufferWithEviction<In> messageQueue) {
         this.messageQueue = messageQueue;

@@ -37,7 +37,7 @@ public class SumoBufferFlushingTask extends BufferFlushingTask<String, String> {
     private static final Logger logger = LogManager.getRootLogger();
     private SumoHttpSender sender;
     private long maxFlushIntervalMs;
-    private long messagesPerRequest;
+    private int messagesPerRequest;
 
     public SumoBufferFlushingTask(BufferWithEviction<String> queue) {
         super(queue);
@@ -47,7 +47,7 @@ public class SumoBufferFlushingTask extends BufferFlushingTask<String, String> {
         this.sender = sender;
     }
 
-    public void setMessagesPerRequest(long messagesPerRequest) {
+    public void setMessagesPerRequest(int messagesPerRequest) {
         this.messagesPerRequest = messagesPerRequest;
     }
 
@@ -61,7 +61,7 @@ public class SumoBufferFlushingTask extends BufferFlushingTask<String, String> {
     }
 
     @Override
-    protected long getMessagesPerRequest() {
+    protected int getMessagesPerRequest() {
         return messagesPerRequest;
     }
 
