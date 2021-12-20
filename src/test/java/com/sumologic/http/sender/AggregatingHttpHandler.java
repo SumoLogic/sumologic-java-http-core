@@ -28,8 +28,8 @@ package com.sumologic.http.sender;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -41,7 +41,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 public class AggregatingHttpHandler implements HttpHandler {
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger logger = LoggerFactory.getLogger(AggregatingHttpHandler.class);
     private static String REQUEST_ENCODING = "UTF-8";
     private List<MaterializedHttpRequest> exchanges = new ArrayList<MaterializedHttpRequest>();
     private Queue<Integer> forceReturnCodes = new ArrayBlockingQueue<Integer>(100);

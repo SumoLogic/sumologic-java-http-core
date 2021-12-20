@@ -28,13 +28,13 @@ package com.sumologic.http.sender;
 
 import com.sumologic.http.aggregation.BufferFlushingTask;
 import com.sumologic.http.queue.BufferWithEviction;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class SumoBufferFlushingTask extends BufferFlushingTask<String, String> {
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger logger = LoggerFactory.getLogger(SumoBufferFlushingTask.class);
     private SumoHttpSender sender;
     private long maxFlushIntervalMs;
     private int messagesPerRequest;

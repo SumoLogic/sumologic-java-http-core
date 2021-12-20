@@ -26,8 +26,9 @@
 
 package com.sumologic.http.queue;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 
@@ -38,7 +39,7 @@ import static com.sumologic.http.queue.CostBoundedConcurrentQueue.CostAssigner;
  * the queue in batches.
  */
 public class BufferWithFifoEviction<T> extends BufferWithEviction<T> {
-    private static final Logger logger = LogManager.getRootLogger();
+    private static final Logger logger = LoggerFactory.getLogger(BufferWithFifoEviction.class);
     private CostBoundedConcurrentQueue<T> queue;
     private CostAssigner<T> costAssigner;
 
