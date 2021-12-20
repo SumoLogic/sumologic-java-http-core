@@ -13,7 +13,7 @@ The library can be added to your project using Maven Central by adding the follo
 <dependency>
     <groupId>com.sumologic.plugins.http</groupId>
     <artifactId>sumologic-http-core</artifactId>
-    <version>1.7</version>
+    <version>2.0</version>
 </dependency>
 ```
 
