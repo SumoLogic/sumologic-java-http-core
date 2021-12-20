@@ -49,7 +49,7 @@ public class SumoHttpSenderTest {
     private SumoBufferFlusher flusher;
 
     private void setUpSender(String url, String sourceName, String sourceHost,
-                             String sourceCategory, long messagesPerRequest,
+                             String sourceCategory, int messagesPerRequest,
                              long maxFlushIntervalMs, boolean flushAllBeforeStopping,
                              String retryableHttpCodeRegex) {
         sender = new SumoHttpSender();
@@ -230,12 +230,11 @@ public class SumoHttpSenderTest {
         flusher.start();
         flusher.stop();
         Thread.sleep(200);
-        assertEquals(1, handler.getExchanges().size());
+        assertEquals(10, handler.getExchanges().size());
         StringBuffer expected = new StringBuffer();
         for (int i = 0; i < 10; i ++) {
-            expected.append("info " + i + "\n");
+            assertEquals("info " + i + "\n", handler.getExchanges().get(i).getBody());
         }
-        assertEquals(expected.toString(), handler.getExchanges().get(0).getBody());
     }
 
     @Test(timeout=1000)
@@ -253,7 +252,7 @@ public class SumoHttpSenderTest {
     public void testRetryRegex() throws Exception {
         String retryRegex = "^5.*|429|407";
         setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
-                1, 1, false, retryRegex);
+                1, 1, true, retryRegex);
         // Retry on 5xx, 429, and 407 only
         handler.addForceReturnCode(503);
         handler.addForceReturnCode(502);
@@ -270,6 +269,9 @@ public class SumoHttpSenderTest {
         Thread.sleep(200);
         queue.add("Test3");
         Thread.sleep(1000);
+
+        flusher.stop();
+
         assertEquals(2, handler.getExchanges().size());
         assertEquals("Test1", handler.getExchanges().get(0).getBody());
         assertEquals("Test3", handler.getExchanges().get(1).getBody());

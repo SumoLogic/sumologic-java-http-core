@@ -78,11 +78,11 @@ public class CostBoundedConcurrentQueue<T> {
      * @param collection Destination collection
      * @return the number of elements transferred
      */
-    public int drainTo(Collection<T> collection) {
+    public int drainTo(Collection<T> collection, int atMost) {
 
         assert collection.isEmpty();
 
-        int elementsDrained = queue.drainTo(collection);
+        int elementsDrained = queue.drainTo(collection, atMost);
         for (T e: collection) {
             cost.addAndGet(- costAssigner.cost(e));
         }

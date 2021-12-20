@@ -52,7 +52,7 @@ public abstract class BufferWithEviction<Q> {
     protected abstract Q evict();
     protected abstract boolean evict(long cost);
     public abstract int size();
-    public abstract int drainTo(Collection<Q> collection);
+    public abstract int drainTo(Collection<Q> collection, int atMost);
     public abstract boolean add(Q element);
 
 }

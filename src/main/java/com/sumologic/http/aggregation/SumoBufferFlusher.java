@@ -42,7 +42,7 @@ public class SumoBufferFlusher {
 
     public SumoBufferFlusher(
             long flushingAccuracyMs,
-            long messagesPerRequest,
+            int messagesPerRequest,
             long maxFlushIntervalMs,
             SumoHttpSender sender,
             BufferWithEviction<String> buffer,
@@ -90,8 +90,8 @@ public class SumoBufferFlusher {
 
         if (flushingTask != null && flushBeforeStop) {
             // To satisfy needsFlushing in com.sumologic.http.aggregation.BufferFlushingTask for last flush before dying
-            flushingTask.setMessagesPerRequest(1L);
-            flushingTask.run();
+            flushingTask.setMessagesPerRequest(1);
+            flushingTask.flushAndSend();
         }
     }
 
