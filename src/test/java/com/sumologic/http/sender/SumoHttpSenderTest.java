@@ -281,7 +281,7 @@ public class SumoHttpSenderTest {
     @Test
     public void testExceedingMaxNumberOfRetries() throws Exception {
         setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
-                1, 2,1, false, null);
+                1, 2, 1, false, null);
         handler.addForceReturnCode(503);
         handler.addForceReturnCode(503);
         handler.addForceReturnCode(503);
