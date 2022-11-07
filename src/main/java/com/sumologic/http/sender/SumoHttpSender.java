@@ -54,6 +54,7 @@ public class SumoHttpSender {
     private static final String SUMO_CLIENT_HEADER = "X-Sumo-Client";
 
     private long retryIntervalMs = 10000L;
+    private int maxNumberOfRetries = -1;
     private int connectionTimeoutMs = 1000;
     private int socketTimeoutMs = 60000;
     private String url = null;
@@ -76,6 +77,10 @@ public class SumoHttpSender {
 
     public void setRetryIntervalMs(long retryIntervalMs) {
         this.retryIntervalMs = retryIntervalMs;
+    }
+
+    public void setMaxNumberOfRetries(int maxNumberOfRetries) {
+        this.maxNumberOfRetries = maxNumberOfRetries;
     }
 
     public void setUrl(String url) {
@@ -146,7 +151,10 @@ public class SumoHttpSender {
 
     private void keepTrying(String body) {
         boolean success = false;
+        int tries = 0;
         do {
+            tries++;
+
             try {
                 trySend(body);
                 success = true;
@@ -156,6 +164,13 @@ public class SumoHttpSender {
                 } catch (InterruptedException e1) {
                     break;
                 }
+            }
+
+            if ((tries - 1 == maxNumberOfRetries) && (maxNumberOfRetries >= 0)) {
+                if (!success) {
+                    logger.warn("Dropping message, because max number of retries has been reached. Message: %s", body);
+                }
+                break;
             }
         } while (!success && !Thread.currentThread().isInterrupted());
     }
