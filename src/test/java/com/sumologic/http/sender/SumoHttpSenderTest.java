@@ -314,7 +314,7 @@ public class SumoHttpSenderTest {
     @Test
     public void testNotAllowingRetries() throws Exception {
         setUpSender(ENDPOINT_URL, "testSource", "testHost", "testCategory",
-                1, 0,1, false, null);
+                1, 0, 1, false, null);
         handler.addForceReturnCode(503);
         handler.addForceReturnCode(200);
 
