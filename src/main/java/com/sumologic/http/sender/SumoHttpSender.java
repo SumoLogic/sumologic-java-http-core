@@ -168,7 +168,7 @@ public class SumoHttpSender {
 
             if ((tries - 1 == maxNumberOfRetries) && (maxNumberOfRetries >= 0)) {
                 if (!success) {
-                    logger.warn("Dropping message, because max number of retires has been reached. Message: %s", body);
+                    logger.warn("Dropping message, because max number of retries has been reached. Message: %s", body);
                 }
                 break;
             }
