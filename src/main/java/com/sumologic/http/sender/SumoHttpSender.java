@@ -52,6 +52,7 @@ public class SumoHttpSender {
     private static final String SUMO_SOURCE_CATEGORY_HEADER = "X-Sumo-Category";
     private static final String SUMO_SOURCE_HOST_HEADER = "X-Sumo-Host";
     private static final String SUMO_CLIENT_HEADER = "X-Sumo-Client";
+    private static final String SUMO_FIELDS_HEADER = "X-Sumo-Fields";
 
     private long retryIntervalMs = 10000L;
     private int maxNumberOfRetries = -1;
@@ -64,8 +65,10 @@ public class SumoHttpSender {
     private ProxySettings proxySettings = null;
     private CloseableHttpClient httpClient = null;
     private String clientHeaderValue = null;
+    private String fieldsHeaderValue = null;
     private String retryableHttpCodeRegex = "^5.*";
     private Pattern retryableHttpCodeRegexPattern = null;
+    private SumoHttpSender fields = null;
 
     public ProxySettings getProxySettings() {
         return proxySettings;
@@ -109,6 +112,10 @@ public class SumoHttpSender {
 
     public void setClientHeaderValue(String clientHeaderValue) {
         this.clientHeaderValue = clientHeaderValue;
+    }
+
+    public void setFieldsHeaderValue(String fieldsHeaderValue) {
+        this.fieldsHeaderValue = fieldsHeaderValue;
     }
 
     public void setRetryableHttpCodeRegex(String retryableHttpCodeRegex) {
@@ -186,6 +193,7 @@ public class SumoHttpSender {
             safeSetHeader(post, SUMO_SOURCE_CATEGORY_HEADER, sourceCategory);
             safeSetHeader(post, SUMO_SOURCE_HOST_HEADER, sourceHost);
             safeSetHeader(post, SUMO_CLIENT_HEADER, clientHeaderValue);
+            safeSetHeader(post, SUMO_FIELDS_HEADER, fieldsHeaderValue);
             post.setEntity(new StringEntity(body, Consts.UTF_8));
             HttpResponse response = httpClient.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();

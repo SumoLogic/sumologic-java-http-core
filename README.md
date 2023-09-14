@@ -52,6 +52,7 @@ To use the library, you'll probably want to create a `SumoBufferFlusher` which a
 | maxQueueSizeBytes      | No        | 1000000           | Maximum capacity (in bytes) of the message queue                                                                                           |
 | flushAllBeforeStopping | No        | false             | Flush all messages before stopping regardless of flushingAccuracyMs                                                                        |
 | retryableHttpCodeRegex | No        | ^5.*              | Regular expression specifying which HTTP error code(s) should be retried during sending. By default, all 5xx error codes will be retried.  |
+| fields                 | No        |                   | Fields as custom metadata, need to be in a comma separated list of key-value pairs.                                                        |
 
 ### TLS 1.2 Requirement
 
