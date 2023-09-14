@@ -30,28 +30,28 @@ The three main components are:
 To use the library, you'll probably want to create a `SumoBufferFlusher` which asynchronously invokes sending via a `SumoHttpSender` based on data placed concurrently in a queue.  For an example, see `SumoHttpSenderTest`.
 
 ### Parameters
-| Parameter             | Required? | Default Value | Description                                                                                                                                |
-|-----------------------|----------|---------------|--------------------------------------------------------------------------------------------------------------------------------------------|
-| url                   | Yes      |               | HTTP collection endpoint URL                                                                                                               |
-| sourceName            | No       | "Http Input"              | Source name to appear when searching on Sumo Logic by `_sourceName`                                                                                                       |
-| sourceHost            | No       | Client IP Address              | Source host to appear when searching on Sumo Logic by `_sourceHost`                                                                                                        |
-| sourceCategory        | No       | "Http Input"              | Source category to appear when searching on Sumo Logic by `_sourceCategory`                                                                                                        |
-| proxyHost             | No       |               | Proxy host IP address                                                                                                                      |
-| proxyPort             | No       |               | Proxy host port number                                                                                                                     |
-| proxyAuth             | No       |               | For basic authentication proxy, set to "basic". For NTLM authentication proxy, set to "ntlm". For no authentication proxy, do not specify. |
-| proxyUser             | No       |               | Proxy host username for basic and NTLM authentication. For no authentication proxy, do not specify.                                        |
-| proxyPassword         | No       |               | Proxy host password for basic and NTLM authentication. For no authentication proxy, do not specify.                                        |
-| proxyDomain           | No       |               | Proxy host domain name for NTLM authentication only                                                                                        |
-| retryIntervalMs         | No       | 10000         | Retry interval (in ms) if a request fails                                                                                                  |
-| maxNumberOfRetries      | No       | -1            | Maximum number of retries before a message is dropped. Negative values represent no limit on retries.                                      |
-| connectionTimeoutMs     | No       | 1000          | Timeout (in ms) for connection                                                                                                             |
-| socketTimeoutMs         | No       | 60000         | Timeout (in ms) for a socket                                                                                                               |
-| messagesPerRequest    | No       | 100           | Number of messages needed to be in the queue before flushing                                                                               |
-| maxFlushIntervalMs      | No       | 10000         | Maximum interval (in ms) between flushes                                                                                                   |
-| flushingAccuracyMs      | No       | 250           | How often (in ms) that the flushing thread checks the message queue                                                                        |
-| maxQueueSizeBytes     | No       | 1000000       | Maximum capacity (in bytes) of the message queue
-| flushAllBeforeStopping| No       | false         | Flush all messages before stopping regardless of flushingAccuracyMs
-| retryableHttpCodeRegex| No       | ^5.*         | Regular expression specifying which HTTP error code(s) should be retried during sending. By default, all 5xx error codes will be retried.
+| Parameter              | Required? | Default Value     | Description                                                                                                                                |
+|------------------------|-----------|-------------------|--------------------------------------------------------------------------------------------------------------------------------------------|
+| url                    | Yes       |                   | HTTP collection endpoint URL                                                                                                               |
+| sourceName             | No        | "Http Input"      | Source name to appear when searching on Sumo Logic by `_sourceName`                                                                        |
+| sourceHost             | No        | Client IP Address | Source host to appear when searching on Sumo Logic by `_sourceHost`                                                                        |
+| sourceCategory         | No        | "Http Input"      | Source category to appear when searching on Sumo Logic by `_sourceCategory`                                                                |
+| proxyHost              | No        |                   | Proxy host IP address                                                                                                                      |
+| proxyPort              | No        |                   | Proxy host port number                                                                                                                     |
+| proxyAuth              | No        |                   | For basic authentication proxy, set to "basic". For NTLM authentication proxy, set to "ntlm". For no authentication proxy, do not specify. |
+| proxyUser              | No        |                   | Proxy host username for basic and NTLM authentication. For no authentication proxy, do not specify.                                        |
+| proxyPassword          | No        |                   | Proxy host password for basic and NTLM authentication. For no authentication proxy, do not specify.                                        |
+| proxyDomain            | No        |                   | Proxy host domain name for NTLM authentication only                                                                                        |
+| retryIntervalMs        | No        | 10000             | Retry interval (in ms) if a request fails                                                                                                  |
+| maxNumberOfRetries     | No        | -1                | Maximum number of retries before a message is dropped. Negative values represent no limit on retries.                                      |
+| connectionTimeoutMs    | No        | 1000              | Timeout (in ms) for connection                                                                                                             |
+| socketTimeoutMs        | No        | 60000             | Timeout (in ms) for a socket                                                                                                               |
+| messagesPerRequest     | No        | 100               | Number of messages needed to be in the queue before flushing                                                                               |
+| maxFlushIntervalMs     | No        | 10000             | Maximum interval (in ms) between flushes                                                                                                   |
+| flushingAccuracyMs     | No        | 250               | How often (in ms) that the flushing thread checks the message queue                                                                        |
+| maxQueueSizeBytes      | No        | 1000000           | Maximum capacity (in bytes) of the message queue                                                                                           |
+| flushAllBeforeStopping | No        | false             | Flush all messages before stopping regardless of flushingAccuracyMs                                                                        |
+| retryableHttpCodeRegex | No        | ^5.*              | Regular expression specifying which HTTP error code(s) should be retried during sending. By default, all 5xx error codes will be retried.  |
 
 ### TLS 1.2 Requirement
 
