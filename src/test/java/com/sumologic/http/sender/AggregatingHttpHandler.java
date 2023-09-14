@@ -42,9 +42,9 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public class AggregatingHttpHandler implements HttpHandler {
     private static final Logger logger = LoggerFactory.getLogger(AggregatingHttpHandler.class);
-    private static String REQUEST_ENCODING = "UTF-8";
-    private List<MaterializedHttpRequest> exchanges = new ArrayList<MaterializedHttpRequest>();
-    private Queue<Integer> forceReturnCodes = new ArrayBlockingQueue<Integer>(100);
+    private final static String REQUEST_ENCODING = "UTF-8";
+    private final List<MaterializedHttpRequest> exchanges = new ArrayList<MaterializedHttpRequest>();
+    private final Queue<Integer> forceReturnCodes = new ArrayBlockingQueue<Integer>(100);
 
     // Extract and materialize HTTP Request Body into a String
     private String readRequestBody(HttpExchange httpExchange) throws IOException {

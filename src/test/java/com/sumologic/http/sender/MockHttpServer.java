@@ -34,8 +34,8 @@ import java.net.InetSocketAddress;
 
 public class MockHttpServer {
 
-    private int port;
-    private HttpHandler handler;
+    private final int port;
+    private final HttpHandler handler;
     private HttpServer server;
 
     public MockHttpServer(int port, HttpHandler handler) {

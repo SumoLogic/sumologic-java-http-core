@@ -58,7 +58,7 @@ public class BufferFlushingTaskTest {
     }
 
     @Test
-    public void testFlushBySize() throws Exception {
+    public void testFlushBySize() {
         BufferFlushingTask<String, List<String>> task =
                 createTask(Integer.MAX_VALUE, 3);
 
@@ -79,7 +79,7 @@ public class BufferFlushingTaskTest {
     }
 
     @Test
-    public void testFlushByDate_Immediate() throws Exception {
+    public void testFlushByDate_Immediate() {
         BufferFlushingTask<String, List<String>> task =
                 createTask(-1, Integer.MAX_VALUE);
 
@@ -101,7 +101,7 @@ public class BufferFlushingTaskTest {
     }
 
     @Test
-    public void testFlushByDate_LongInterval() throws Exception {
+    public void testFlushByDate_LongInterval() {
         BufferFlushingTask<String, List<String>> task =
                 createTask(Integer.MAX_VALUE, Integer.MAX_VALUE);
         task.run();
@@ -114,7 +114,7 @@ public class BufferFlushingTaskTest {
     }
 
     @Test
-    public void testFlushDoesNotSendTooManyMessagesAtOnce() throws Exception {
+    public void testFlushDoesNotSendTooManyMessagesAtOnce() {
         // given
         BufferFlushingTask<String, List<String>> task =
                 createTask(Integer.MAX_VALUE, 2);

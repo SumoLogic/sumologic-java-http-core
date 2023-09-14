@@ -31,11 +31,11 @@ import com.sumologic.http.queue.BufferWithEviction;
 import com.sumologic.http.queue.BufferWithFifoEviction;
 import com.sumologic.http.queue.CostBoundedConcurrentQueue;
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 public class SumoHttpSenderTest {
 
@@ -113,10 +113,10 @@ public class SumoHttpSenderTest {
         assertEquals(1, handler.getExchanges().size());
         assertEquals("This is a message\n", handler.getExchanges().get(0).getBody());
         for (MaterializedHttpRequest request: handler.getExchanges()) {
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Name").equals("testSource"));
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Category").equals("testCategory"));
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Host").equals("testHost"));
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Client").equals("testClient"));
+            assertEquals("testSource", request.getHeaders().getFirst("X-Sumo-Name"));
+            assertEquals("testCategory", request.getHeaders().getFirst("X-Sumo-Category"));
+            assertEquals("testHost", request.getHeaders().getFirst("X-Sumo-Host"));
+            assertEquals("testClient", request.getHeaders().getFirst("X-Sumo-Client"));
         }
     }
 
@@ -130,10 +130,10 @@ public class SumoHttpSenderTest {
         assertEquals(1, handler.getExchanges().size());
         assertEquals("This is a message\n", handler.getExchanges().get(0).getBody());
         for (MaterializedHttpRequest request: handler.getExchanges()) {
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Name") == null);
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Category") == null);
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Host") == null);
-            assertEquals(true, request.getHeaders().getFirst("X-Sumo-Client").equals("testClient"));
+            assertNull(request.getHeaders().getFirst("X-Sumo-Name"));
+            assertNull(request.getHeaders().getFirst("X-Sumo-Category"));
+            assertNull(request.getHeaders().getFirst("X-Sumo-Host"));
+            assertEquals("testClient", request.getHeaders().getFirst("X-Sumo-Client"));
         }
     }
 
@@ -171,9 +171,9 @@ public class SumoHttpSenderTest {
         flusher.start();
         Thread.sleep(200);
         assertEquals(1, handler.getExchanges().size());
-        StringBuffer expected = new StringBuffer();
+        StringBuilder expected = new StringBuilder();
         for (int i = 0; i < 1000; i ++) {
-            expected.append("info " + i + "\n");
+            expected.append("info ").append(i).append("\n");
         }
         assertEquals(expected.toString(), handler.getExchanges().get(0).getBody());
     }
@@ -232,7 +232,6 @@ public class SumoHttpSenderTest {
         flusher.stop();
         Thread.sleep(200);
         assertEquals(10, handler.getExchanges().size());
-        StringBuffer expected = new StringBuffer();
         for (int i = 0; i < 10; i ++) {
             assertEquals("info " + i + "\n", handler.getExchanges().get(i).getBody());
         }
